@@ -1,92 +1,45 @@
-import { StatusBar } from "expo-status-bar";
-import {
-  StyleSheet,
-  Text,
-  View,
-  ImageBackground,
-  TextInput,
-  TouchableOpacity,
-} from "react-native";
+import React, { useState } from "react";
+import * as Font from "expo-font";
+import AppLoading from "expo-app-loading";
+import LoginScreen from "./screens/auth/LoginScreen";
+import RegisterScreen from "./screens/auth/RegisterScreen";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+
+const AuthStack = createNativeStackNavigator();
+
+const loadAplication = async () => {
+  await Font.loadAsync({
+    NotoSerif: require("./assets/Fonts/NotoSerif-BoldItalic.ttf"),
+  });
+};
 
 export default function App() {
+  const [isReady, setIsReady] = useState(false);
+
+  if (!isReady) {
+    return (
+      <AppLoading
+        startAsync={loadAplication}
+        onFinish={() => setIsReady(true)}
+        onError={console.warn}
+      />
+    );
+  }
   return (
-    <View style={styles.container}>
-      <ImageBackground
-        source={require("./assets/fone-book.jpg")}
-        resizeMode="cover"
-        style={styles.image}
-      >
-        <View style={styles.form}>
-          <View>
-            <Text style={styles.inputText}>
-              EMAIL ADRESS
-            </Text>
-            <TextInput
-              style={styles.input}
-              textAlign={"center"}
-            />
-          </View>
-          <View style={{ marginTop: 20 }}>
-            <Text style={styles.inputText}>PASSWORD</Text>
-            <TextInput
-              style={styles.input}
-              textAlign={"center"}
-              secureTextEntry={true}
-            />
-          </View>
-          <TouchableOpacity style={styles.btn}>
-            <Text style={styles.btnTitle}>SIGN IN</Text>
-          </TouchableOpacity>
-        </View>
-        <StatusBar style="auto" />
-      </ImageBackground>
-    </View>
+    <NavigationContainer>
+      <AuthStack.Navigator>
+        <AuthStack.Screen
+          name="Login"
+          component={LoginScreen}
+          options={{ headerShown: false }}
+        />
+        <AuthStack.Screen
+          name="Register"
+          component={RegisterScreen}
+          options={{ headerShown: false }}
+        />
+      </AuthStack.Navigator>
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    // alignItems: "center",
-    justifyContent: "center",
-  },
-  form: {
-    marginHorizontal: 40,
-  },
-  text: {
-    color: "red",
-    fontSize: 18,
-    textAlign: "center",
-  },
-  image: {
-    flex: 1,
-    resizeMode: "cover",
-    justifyContent: "center",
-    // alignItems: "center",
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: "#000",
-    height: 40,
-    borderRadius: 8,
-
-    color: "#000",
-  },
-  inputText: {
-    fontSize: 18,
-    marginBottom: 12,
-  },
-  btn: {
-    backgroundColor: "green",
-    height: 40,
-    marginTop: 35,
-    borderRadius: 8,
-    justifyContent: "center",
-  },
-  btnTitle: {
-    color: "#fff",
-    fontSize: 18,
-    textAlign: "center",
-  },
-});
