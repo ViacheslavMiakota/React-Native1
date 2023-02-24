@@ -1,12 +1,12 @@
 import React, { useState } from "react";
+import {} from "react-native";
+
 import * as Font from "expo-font";
 import AppLoading from "expo-app-loading";
-import LoginScreen from "./screens/auth/LoginScreen";
-import RegisterScreen from "./screens/auth/RegisterScreen";
-import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-const AuthStack = createNativeStackNavigator();
+import { NavigationContainer } from "@react-navigation/native";
+
+import { useRoute } from "./router";
 
 const loadAplication = async () => {
   await Font.loadAsync({
@@ -16,7 +16,7 @@ const loadAplication = async () => {
 
 export default function App() {
   const [isReady, setIsReady] = useState(false);
-
+  const routing = useRoute(true);
   if (!isReady) {
     return (
       <AppLoading
@@ -27,19 +27,6 @@ export default function App() {
     );
   }
   return (
-    <NavigationContainer>
-      <AuthStack.Navigator>
-        <AuthStack.Screen
-          name="Login"
-          component={LoginScreen}
-          options={{ headerShown: false }}
-        />
-        <AuthStack.Screen
-          name="Register"
-          component={RegisterScreen}
-          options={{ headerShown: false }}
-        />
-      </AuthStack.Navigator>
-    </NavigationContainer>
+    <NavigationContainer>{routing}</NavigationContainer>
   );
 }

@@ -128,7 +128,7 @@ export default function LoginScreen({ navigation }) {
                 }
               >
                 <Text style={{ color: "#fff" }}>
-                  New to aplication{""}
+                  New to aplication{"  "}
                   <Text
                     style={{
                       fontSize: 18,

@@ -136,7 +136,9 @@ export default function RegisterScreen({ navigation }) {
                 style={styles.btn}
                 onPress={keyboardHide}
               >
-                <Text style={styles.btnTitle}>SIGN IN</Text>
+                <Text style={styles.btnTitle}>
+                  Register
+                </Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={{
@@ -146,7 +148,7 @@ export default function RegisterScreen({ navigation }) {
                 onPress={() => navigation.navigate("Login")}
               >
                 <Text style={{ color: "#fff" }}>
-                  New to aplication{""}
+                  Registered{"   "}
                   <Text
                     style={{
                       fontSize: 18,
