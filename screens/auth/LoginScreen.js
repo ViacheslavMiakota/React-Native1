@@ -11,7 +11,6 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
   Dimensions,
-  Button,
 } from "react-native";
 
 const initialState = {
@@ -19,30 +18,32 @@ const initialState = {
   password: "",
 };
 
-export default function LoginScreen({ navigation }) {
+const LoginScreen = ({ navigation }) => {
+  // console.log("nav", navigation);
   const [isShowKeyBoard, setIsShowKeyBoard] =
     useState(false);
   const [state, setState] = useState(initialState);
   const [dimensions, setDimensions] = useState(
     Dimensions.get("window").width - 20 * 2
   );
-  const keyboardHide = () => {
-    setIsShowKeyBoard(false);
-    Keyboard.dismiss();
-    console.log(state);
-    setState(initialState);
-  };
 
   useEffect(() => {
     const onChange = () => {
       const width = Dimensions.get("window").width - 20 * 2;
       setDimensions(width);
     };
-    Dimensions.addEventListener("change", onChange);
-    return () => {
-      Dimensions.removeEventListener("change", onChange);
-    };
+    const dimensionsHandler = Dimensions.addEventListener(
+      "change",
+      onChange
+    );
+    return () => dimensionsHandler.remove();
   }, []);
+
+  const keyboardHide = () => {
+    setIsShowKeyBoard(false);
+    Keyboard.dismiss();
+    setState(initialState);
+  };
 
   return (
     <TouchableWithoutFeedback onPress={keyboardHide}>
@@ -145,7 +146,9 @@ export default function LoginScreen({ navigation }) {
       </View>
     </TouchableWithoutFeedback>
   );
-}
+};
+
+export default LoginScreen;
 
 const styles = StyleSheet.create({
   container: {

@@ -11,7 +11,6 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
   Dimensions,
-  Button,
 } from "react-native";
 
 const initialState = {
@@ -19,19 +18,26 @@ const initialState = {
   password: "",
   nickname: "",
 };
+import { useDispatch } from "react-redux";
 
-export default function RegisterScreen({ navigation }) {
+import { authSignUpUser } from "../../redux/auth/authOperations";
+
+const RegisterScreen = ({ navigation }) => {
+  // console.log("nav", navigation);
   const [isShowKeyBoard, setIsShowKeyBoard] =
     useState(false);
   const [state, setState] = useState(initialState);
 
+  const dispatch = useDispatch();
+
   const [dimensions, setDimensions] = useState(
     Dimensions.get("window").width - 20 * 2
   );
-  const keyboardHide = () => {
+  const handleSubmit = () => {
     setIsShowKeyBoard(false);
     Keyboard.dismiss();
     console.log(state);
+    dispatch(authSignUpUser(state));
     setState(initialState);
   };
 
@@ -40,13 +46,15 @@ export default function RegisterScreen({ navigation }) {
       const width = Dimensions.get("window").width - 20 * 2;
       setDimensions(width);
     };
-    Dimensions.addEventListener("change", onChange);
-    return () => {
-      Dimensions.removeEventListener("change", onChange);
-    };
+    const dimensionsHandler = Dimensions.addEventListener(
+      "change",
+      onChange
+    );
+    return () => dimensionsHandler.remove();
   }, []);
+
   return (
-    <TouchableWithoutFeedback onPress={keyboardHide}>
+    <TouchableWithoutFeedback onPress={handleSubmit}>
       <View style={styles.container}>
         <ImageBackground
           source={require("../../assets/fone-book.jpg")}
@@ -134,7 +142,7 @@ export default function RegisterScreen({ navigation }) {
               <TouchableOpacity
                 activeOpacity={0.6}
                 style={styles.btn}
-                onPress={keyboardHide}
+                onPress={handleSubmit}
               >
                 <Text style={styles.btnTitle}>
                   Register
@@ -165,7 +173,9 @@ export default function RegisterScreen({ navigation }) {
       </View>
     </TouchableWithoutFeedback>
   );
-}
+};
+
+export default RegisterScreen;
 
 const styles = StyleSheet.create({
   container: {

@@ -8,7 +8,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import LoginScreen from "./screens/auth/LoginScreen";
 import RegisterScreen from "./screens/auth/RegisterScreen";
 import PostsScreen from "./screens/Main/PostsScreen";
-import ProfileScreen from "./screens/Main/ProfileSreen";
+import ProfileScreen from "./screens/Main/ProfileScreen";
 import CreatePostsScreen from "./screens/Main/CreatePostsScreen";
 
 const TabStack = createMaterialBottomTabNavigator();
@@ -46,7 +46,7 @@ export const useRoute = (isAuth) => {
             />
           ),
         }}
-        name="Post"
+        name="Posts"
         component={PostsScreen}
       />
       <TabStack.Screen
