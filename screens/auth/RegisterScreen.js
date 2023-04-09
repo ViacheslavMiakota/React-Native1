@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
+  Image,
   Text,
   View,
   ImageBackground,
@@ -16,14 +17,13 @@ import {
 const initialState = {
   email: "",
   password: "",
-  nickname: "",
+  nickName: "",
 };
 import { useDispatch } from "react-redux";
 
-import { authSignUpUser } from "../../redux/auth/authOperations";
+import { registerUser } from "../../redux/auth/authOperations";
 
 const RegisterScreen = ({ navigation }) => {
-  // console.log("nav", navigation);
   const [isShowKeyBoard, setIsShowKeyBoard] =
     useState(false);
   const [state, setState] = useState(initialState);
@@ -33,17 +33,10 @@ const RegisterScreen = ({ navigation }) => {
   const [dimensions, setDimensions] = useState(
     Dimensions.get("window").width - 20 * 2
   );
-  const handleSubmit = () => {
-    setIsShowKeyBoard(false);
-    Keyboard.dismiss();
-    console.log(state);
-    dispatch(authSignUpUser(state));
-    setState(initialState);
-  };
 
   useEffect(() => {
     const onChange = () => {
-      const width = Dimensions.get("window").width - 20 * 2;
+      const width = Dimensions.get("window").width - 16 * 2;
       setDimensions(width);
     };
     const dimensionsHandler = Dimensions.addEventListener(
@@ -53,11 +46,18 @@ const RegisterScreen = ({ navigation }) => {
     return () => dimensionsHandler.remove();
   }, []);
 
+  const handleSubmit = () => {
+    setIsShowKeyBoard(false);
+    Keyboard.dismiss();
+    dispatch(registerUser(state));
+    setState(initialState);
+  };
+
   return (
     <TouchableWithoutFeedback onPress={handleSubmit}>
       <View style={styles.container}>
         <ImageBackground
-          source={require("../../assets/fone-book.jpg")}
+          source={require("../../assets/damion-club-p.png")}
           resizeMode="cover"
           style={styles.image}
         >
@@ -69,6 +69,7 @@ const RegisterScreen = ({ navigation }) => {
             <View
               style={{
                 ...styles.form,
+                top: 60,
                 marginBottom: isShowKeyBoard ? 20 : 100,
                 width: dimensions,
               }}
@@ -77,36 +78,41 @@ const RegisterScreen = ({ navigation }) => {
                 <Text style={styles.headerTitle}>
                   Hello
                 </Text>
+              </View>
+              <View>
+                <View style={styles.boxImg}>
+                  <Image
+                    source={{ uri: "app_icon" }}
+                    style={{
+                      width: 120,
+                      height: 120,
+                      borderRadius: 10,
+                      backgroundColor: "#fff",
+                    }}
+                  />
+                </View>
                 <Text style={styles.headerTitle}>
                   Sing up in to get started
                 </Text>
-              </View>
-              <View>
-                <Text style={styles.inputText}>
-                  NICK NAME
-                </Text>
                 <TextInput
+                  placeholder={"NICK NAME"}
                   style={styles.input}
-                  textAlign={"center"}
                   onFocus={() => {
                     setIsShowKeyBoard(true);
                   }}
-                  value={state.nickname}
+                  value={state.nickName}
                   onChangeText={(value) =>
                     setState((prevState) => ({
                       ...prevState,
-                      nickname: value,
+                      nickName: value,
                     }))
                   }
                 />
               </View>
               <View>
-                <Text style={styles.inputText}>
-                  EMAIL ADRESS
-                </Text>
                 <TextInput
+                  placeholder={"EMAIL ADRESS"}
                   style={styles.input}
-                  textAlign={"center"}
                   onFocus={() => {
                     setIsShowKeyBoard(true);
                   }}
@@ -119,13 +125,10 @@ const RegisterScreen = ({ navigation }) => {
                   }
                 />
               </View>
-              <View style={{ marginTop: 12 }}>
-                <Text style={styles.inputText}>
-                  PASSWORD
-                </Text>
+              <View>
                 <TextInput
+                  placeholder={"PASSWORD"}
                   style={styles.input}
-                  textAlign={"center"}
                   secureTextEntry={true}
                   onFocus={() => {
                     setIsShowKeyBoard(true);
@@ -145,17 +148,17 @@ const RegisterScreen = ({ navigation }) => {
                 onPress={handleSubmit}
               >
                 <Text style={styles.btnTitle}>
-                  Register
+                  REGISTER
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={{
-                  marginTop: 20,
+                  marginTop: 40,
                   alignSelf: "center",
                 }}
                 onPress={() => navigation.navigate("Login")}
               >
-                <Text style={{ color: "#fff" }}>
+                <Text style={{ color: "#000" }}>
                   Registered{"   "}
                   <Text
                     style={{
@@ -184,7 +187,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   form: {
-    marginHorizontal: 40,
+    marginHorizontal: 36,
   },
   text: {
     color: "red",
@@ -202,17 +205,18 @@ const styles = StyleSheet.create({
     borderColor: "#000",
     height: 40,
     borderRadius: 8,
-
+    marginTop: 8,
     color: "#000",
+    textAlign: "center",
   },
   inputText: {
-    fontSize: 18,
-    marginBottom: 12,
+    fontSize: 12,
+    marginBottom: 8,
     fontFamily: "NotoSerif",
   },
   btn: {
     height: 40,
-    marginTop: 30,
+    marginTop: 16,
     borderWidth: 1,
     borderRadius: 8,
     justifyContent: "center",
@@ -223,23 +227,34 @@ const styles = StyleSheet.create({
         borderColor: "transparent",
       },
       android: {
-        backgroundColor: "green",
+        backgroundColor: "#d2b48c",
         borderColor: "#frfefe",
       },
     }),
   },
   btnTitle: {
-    color: "#fff",
+    color: "#f0ffff",
     fontSize: 18,
     textAlign: "center",
   },
   header: {
     alignItems: "center",
-    marginBottom: 30,
+    marginBottom: 10,
   },
   headerTitle: {
-    fontSize: 30,
+    fontSize: 18,
     color: "#000",
     fontFamily: "NotoSerif",
+    textAlign: "center",
+  },
+  inputImg: {
+    width: 250,
+    height: 250,
+  },
+  boxImg: {
+    marginHorizontal: 120,
+    width: 120,
+    height: 120,
+    marginBottom: 10,
   },
 });

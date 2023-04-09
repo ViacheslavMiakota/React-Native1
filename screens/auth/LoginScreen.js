@@ -18,14 +18,19 @@ const initialState = {
   password: "",
 };
 
+import { authSignInUser } from "../../redux/auth/authOperations";
+
+import { useDispatch } from "react-redux";
+
 const LoginScreen = ({ navigation }) => {
-  // console.log("nav", navigation);
   const [isShowKeyBoard, setIsShowKeyBoard] =
     useState(false);
   const [state, setState] = useState(initialState);
   const [dimensions, setDimensions] = useState(
     Dimensions.get("window").width - 20 * 2
   );
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const onChange = () => {
@@ -39,17 +44,18 @@ const LoginScreen = ({ navigation }) => {
     return () => dimensionsHandler.remove();
   }, []);
 
-  const keyboardHide = () => {
+  const handleSubmit = () => {
     setIsShowKeyBoard(false);
     Keyboard.dismiss();
+    dispatch(authSignInUser(state));
     setState(initialState);
   };
 
   return (
-    <TouchableWithoutFeedback onPress={keyboardHide}>
+    <TouchableWithoutFeedback onPress={handleSubmit}>
       <View style={styles.container}>
         <ImageBackground
-          source={require("../../assets/fone-book.jpg")}
+          source={require("../../assets/damion-club-p.png")}
           resizeMode="cover"
           style={styles.image}
         >
@@ -74,12 +80,9 @@ const LoginScreen = ({ navigation }) => {
                 </Text>
               </View>
               <View>
-                <Text style={styles.inputText}>
-                  EMAIL ADRESS
-                </Text>
                 <TextInput
+                  placeholder={"EMAIL ADRESS"}
                   style={styles.input}
-                  textAlign={"center"}
                   onFocus={() => {
                     setIsShowKeyBoard(true);
                   }}
@@ -92,13 +95,10 @@ const LoginScreen = ({ navigation }) => {
                   }
                 />
               </View>
-              <View style={{ marginTop: 20 }}>
-                <Text style={styles.inputText}>
-                  PASSWORD
-                </Text>
+              <View>
                 <TextInput
+                  placeholder={"PASSWORD"}
                   style={styles.input}
-                  textAlign={"center"}
                   secureTextEntry={true}
                   onFocus={() => {
                     setIsShowKeyBoard(true);
@@ -115,7 +115,7 @@ const LoginScreen = ({ navigation }) => {
               <TouchableOpacity
                 activeOpacity={0.6}
                 style={styles.btn}
-                onPress={keyboardHide}
+                onPress={handleSubmit}
               >
                 <Text style={styles.btnTitle}>SIGN IN</Text>
               </TouchableOpacity>
@@ -174,18 +174,19 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#000",
     height: 40,
+    marginTop: 8,
     borderRadius: 8,
-
     color: "#000",
+    textAlign: "center",
   },
   inputText: {
-    fontSize: 18,
-    marginBottom: 12,
+    fontSize: 12,
+    marginBottom: 8,
     fontFamily: "NotoSerif",
   },
   btn: {
     height: 40,
-    marginTop: 30,
+    marginTop: 16,
     borderWidth: 1,
     borderRadius: 8,
     justifyContent: "center",
@@ -196,23 +197,34 @@ const styles = StyleSheet.create({
         borderColor: "transparent",
       },
       android: {
-        backgroundColor: "green",
+        backgroundColor: "#d2b48c",
         borderColor: "#frfefe",
       },
     }),
   },
   btnTitle: {
-    color: "#fff",
+    color: "#f0ffff",
     fontSize: 18,
     textAlign: "center",
   },
   header: {
     alignItems: "center",
-    marginBottom: 50,
+    marginBottom: 20,
   },
   headerTitle: {
-    fontSize: 30,
+    fontSize: 18,
     color: "#000",
     fontFamily: "NotoSerif",
+    textAlign: "center",
+  },
+  inputImg: {
+    width: 250,
+    height: 250,
+  },
+  boxImg: {
+    marginHorizontal: 120,
+    width: 120,
+    height: 120,
+    marginBottom: 10,
   },
 });

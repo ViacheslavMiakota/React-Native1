@@ -1,33 +1,45 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, ImageBackground } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 
-const MapScreen = () => {
+const MapScreen = ({ route }) => {
+  const { latitude, longitude } = route.params.location;
   return (
     <View style={styles.container}>
-      <MapView
-        style={{ flex: 1 }}
-        initialRegion={{
-          latitude: 50.7341956014795,
-          longitude: 25.30783431550604,
-          latitudeDelta: 0.01,
-          longitudeDelta: 0.01,
-        }}
+      <ImageBackground
+        source={require("../../assets/gamerwall.jpg")}
+        resizeMode="cover"
+        style={styles.image}
       >
-        <Marker
-          coordinate={{
-            latitude: 50.7341956014795,
-            longitude: 25.30783431550624,
-            title: "travel photo",
+        <MapView
+          style={{ flex: 1 }}
+          initialRegion={{
+            latitude,
+            longitude,
+            latitudeDelta: 0.001,
+            longitudeDelta: 0.006,
           }}
-        />
-      </MapView>
+        >
+          <Marker
+            coordinate={{
+              latitude,
+              longitude,
+              title: "travel photo",
+            }}
+          />
+        </MapView>
+      </ImageBackground>
     </View>
   );
 };
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  image: {
+    flex: 1,
+    resizeMode: "cover",
+    justifyContent: "center",
   },
 });
 export default MapScreen;
